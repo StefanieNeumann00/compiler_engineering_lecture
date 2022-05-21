@@ -17,6 +17,6 @@ public class Print extends Stmt {
 
     @Override
     public <R> R accept(StmtVisitor<R> stmtVisitor) {
-        return null;
+        return stmtVisitor.visitPrintStmt(this);
     }
 }

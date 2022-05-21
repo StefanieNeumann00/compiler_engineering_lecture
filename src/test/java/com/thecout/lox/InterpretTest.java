@@ -84,7 +84,7 @@ public class InterpretTest {
         Interpreter interpreter = new Interpreter();
         List<Stmt> statements = parser.parse();
         interpreter.interpret(statements);
-        assertEquals("5", outContent.toString().trim(), "Loop test 1 should eval to 5");
+        assertEquals("5.0", outContent.toString().trim(), "Loop test 1 should eval to 5");
         outContent.reset();
     }
     @Test
@@ -95,7 +95,7 @@ public class InterpretTest {
         Interpreter interpreter = new Interpreter();
         List<Stmt> statements = parser.parse();
         interpreter.interpret(statements);
-        assertEquals("5", outContent.toString().trim(), "Loop test 1 should eval to 5");
+        assertEquals("5.0", outContent.toString().trim(), "Loop test 1 should eval to 5");
         outContent.reset();
     }
     @Test
@@ -106,7 +106,7 @@ public class InterpretTest {
         Interpreter interpreter = new Interpreter();
         List<Stmt> statements = parser.parse();
         interpreter.interpret(statements);
-        assertEquals("6", outContent.toString().trim(), "Conditional test 1 should eval to 6");
+        assertEquals("6.0", outContent.toString().trim(), "Conditional test 1 should eval to 6");
         outContent.reset();
     }
     @Test
@@ -117,7 +117,7 @@ public class InterpretTest {
         Interpreter interpreter = new Interpreter();
         List<Stmt> statements = parser.parse();
         interpreter.interpret(statements);
-        assertEquals("13", outContent.toString().trim(), "Arithmetic test 2 should eval to 13");
+        assertEquals("13.0", outContent.toString().trim(), "Arithmetic test 2 should eval to 13");
         outContent.reset();
     }
 
@@ -129,7 +129,8 @@ public class InterpretTest {
         Interpreter interpreter = new Interpreter();
         List<Stmt> statements = parser.parse();
         interpreter.interpret(statements);
-        assertEquals("7", outContent.toString().trim(), "Arithmetic test 1 should eval to 7");
+        assertEquals("7.0" +
+                "", outContent.toString().trim(), "Arithmetic test 1 should eval to 7");
         outContent.reset();
     }
 

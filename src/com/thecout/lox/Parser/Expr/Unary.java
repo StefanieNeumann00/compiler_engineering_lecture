@@ -19,6 +19,6 @@ public class Unary extends Expr {
 
     @Override
     public <R> R accept(ExprVisitor<R> exprVisitor) {
-        return null;
+        return exprVisitor.visitUnaryExpr(this);
     }
 }

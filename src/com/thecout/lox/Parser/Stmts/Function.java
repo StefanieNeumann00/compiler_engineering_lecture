@@ -27,6 +27,6 @@ public class Function extends Stmt {
 
     @Override
     public <R> R accept(StmtVisitor<R> stmtVisitor) {
-        return null;
+        return stmtVisitor.visitFunctionStmt(this);
     }
 }

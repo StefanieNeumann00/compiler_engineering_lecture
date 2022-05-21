@@ -1,6 +1,6 @@
 package com.thecout.lox;
 
-import com.thecout.lox.Parser.Parser;
+import com.thecout.lox.Parser.*;
 import com.thecout.lox.Parser.Stmts.Function;
 import com.thecout.lox.Parser.Stmts.Print;
 import com.thecout.lox.Parser.Stmts.Stmt;

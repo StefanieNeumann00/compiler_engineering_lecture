@@ -17,6 +17,6 @@ public class Expression extends Stmt {
 
     @Override
     public <R> R accept(StmtVisitor<R> stmtVisitor) {
-        return null;
+        return stmtVisitor.visitExpressionStmt(this);
     }
 }

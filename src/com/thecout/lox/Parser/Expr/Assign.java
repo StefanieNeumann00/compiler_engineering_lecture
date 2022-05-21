@@ -18,6 +18,6 @@ public class Assign extends Expr {
 
     @Override
     public <R> R accept(ExprVisitor<R> exprVisitor) {
-        return null;
+        return exprVisitor.visitAssignExpr(this);
     }
 }

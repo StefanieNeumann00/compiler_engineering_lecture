@@ -3,6 +3,8 @@ package com.thecout.lox.Traversal;
 import com.thecout.lox.Parser.Expr.*;
 import com.thecout.lox.Parser.Stmts.*;
 
+import java.util.stream.Collectors;
+
 public class AstPrinter implements ExprVisitor<String>, StmtVisitor<String> {
     public String print(Expr expr) {
         return expr.accept(this);
@@ -20,32 +22,33 @@ public class AstPrinter implements ExprVisitor<String>, StmtVisitor<String> {
 
     @Override
     public String visitBinaryExpr(Binary expr) {
-        return null;
+        return "(%s %s %s)".formatted(expr.operator.lexeme, expr.left.print(), expr.right.print());
     }
 
     @Override
     public String visitCallExpr(Call expr) {
-        return null;
+        String args = expr.arguments.stream().map(Expr::print).collect(Collectors.joining(" "));
+        return "(%s %s)".formatted(expr.callee.print(), args);
     }
 
     @Override
     public String visitGroupingExpr(Grouping expr) {
-        return null;
+        return "(%s)".formatted(expr.expression.print());
     }
 
     @Override
     public String visitLiteralExpr(Literal expr) {
-        return null;
+        return String.valueOf(expr.value);
     }
 
     @Override
     public String visitLogicalExpr(Logical expr) {
-        return null;
+        return "(%s %s %s)".formatted(expr.operator.lexeme, expr.left.print(), expr.right.print());
     }
 
     @Override
     public String visitUnaryExpr(Unary expr) {
-        return null;
+        return "%s%s".formatted(expr.operator.lexeme, expr.right.print());
     }
 
     @Override
@@ -55,41 +58,43 @@ public class AstPrinter implements ExprVisitor<String>, StmtVisitor<String> {
 
     @Override
     public String visitBlockStmt(Block stmt) {
-        return null;
+        return "(%s)".formatted(stmt.statements.stream().map(Stmt::print).collect(Collectors.joining("\n")));
     }
 
     @Override
     public String visitExpressionStmt(Expression stmt) {
-        return null;
+        return stmt.expression.print();
     }
 
     @Override
     public String visitFunctionStmt(Function stmt) {
-        return null;
+        String params = stmt.parameters.stream().map(t -> t.lexeme).collect(Collectors.joining(" "));
+        String body = stmt.body.stream().map(Stmt::print).collect(Collectors.joining("\n"));
+        return "(Function %s %s )".formatted(params, body);
     }
 
     @Override
     public String visitIfStmt(If stmt) {
-        return null;
+        return "(if %s %s %s)".formatted(stmt.condition.print(), stmt.thenBranch.print(), stmt.elseBranch.print());
     }
 
     @Override
     public String visitPrintStmt(Print stmt) {
-        return null;
+        return "(print %s)".formatted(stmt.expression.print());
     }
 
     @Override
     public String visitReturnStmt(Return stmt) {
-        return null;
+        return "(return %s)".formatted(stmt.value.print());
     }
 
     @Override
     public String visitVarStmt(Var stmt) {
-        return null;
+        return "(= %s %s)".formatted(stmt.name.lexeme, stmt.initializer.print());
     }
 
     @Override
     public String visitWhileStmt(While stmt) {
-        return null;
+        return "(while %s %s)".formatted(stmt.condition.print(), stmt.body.print());
     }
 }

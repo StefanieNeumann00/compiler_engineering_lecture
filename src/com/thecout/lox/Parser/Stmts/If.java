@@ -22,6 +22,6 @@ public class If extends Stmt {
 
     @Override
     public <R> R accept(StmtVisitor<R> stmtVisitor) {
-        return null;
+        return stmtVisitor.visitIfStmt(this);
     }
 }

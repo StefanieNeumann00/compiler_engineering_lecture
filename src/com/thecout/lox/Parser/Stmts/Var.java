@@ -19,6 +19,6 @@ public class Var extends Stmt {
 
     @Override
     public <R> R accept(StmtVisitor<R> stmtVisitor) {
-        return null;
+        return stmtVisitor.visitVarStmt(this);
     }
 }
