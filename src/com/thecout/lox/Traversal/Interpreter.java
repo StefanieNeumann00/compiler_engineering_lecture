@@ -3,6 +3,7 @@ package com.thecout.lox.Traversal;
 
 import com.thecout.lox.Parser.Expr.*;
 import com.thecout.lox.Parser.Stmts.*;
+import com.thecout.lox.TokenType;
 import com.thecout.lox.Traversal.InterpreterUtils.*;
 
 import java.util.ArrayList;
@@ -81,16 +82,19 @@ public class Interpreter implements ExprVisitor<Object>,
     public Object visitBinaryExpr(Binary expr) {
         Object left = evaluate(expr.left);
         Object right = evaluate(expr.right);
+
         if(left instanceof Literal) left = ((Literal) left).value;
         if(right instanceof Literal) right = ((Literal) right).value;
 
-        return switch (expr.operator.type){
-            case STAR -> ((Double) left) * ((Double) right);
-            case SLASH -> ((Double) left) / ((Double) right);
-            case PLUS -> ((Double) left) + ((Double) right);
-            case MINUS -> ((Double) left) - ((Double) right);
-            default -> throw new IllegalStateException("Unexpected value: " + expr.operator.type);
-        };
+        TokenType type = expr.operator.type;
+        switch (type)
+        {
+            case STAR: return ((Double) left) * ((Double) right);
+            case SLASH: return ((Double) left) / ((Double) right);
+            case PLUS: return ((Double) left) + ((Double) right);
+            case MINUS: return ((Double) left) - ((Double) right);
+            default: throw new IllegalStateException("Unexpected value: " + expr.operator.type);
+        }
     }
 
     @Override
@@ -119,24 +123,27 @@ public class Interpreter implements ExprVisitor<Object>,
         Object right = evaluate(expr.right);
         if(left instanceof Literal) left = ((Literal) left).value;
         if(right instanceof Literal) right = ((Literal) right).value;
-        return switch (expr.operator.type){
-            case EQUAL_EQUAL -> left == right;
-            case LESS_EQUAL -> ((Double) left) <= ((Double) right);
-            case GREATER_EQUAL -> ((Double) left) >= ((Double) right);
-            case LESS -> ((Double) left) < ((Double) right);
-            case GREATER -> ((Double) left) > ((Double) right);
-            default -> throw new IllegalStateException("Unexpected value: " + expr.operator.type);
-        };
+        TokenType type = expr.operator.type;
+        switch (type){
+            case EQUAL_EQUAL: return left == right;
+            case LESS_EQUAL: return ((Double) left) <= ((Double) right);
+            case GREATER_EQUAL: return ((Double) left) >= ((Double) right);
+            case LESS: return ((Double) left) < ((Double) right);
+            case GREATER: return ((Double) left) > ((Double) right);
+            default: throw new IllegalStateException("Unexpected value: " + expr.operator.type);
+        }
     }
 
     @Override
-    public Object visitUnaryExpr(Unary expr) {
-        Object o = evaluate(expr.right);
-        return switch (expr.operator.type){
-            case MINUS -> -(Double) o;
-            case BANG -> ! (Boolean) o;
-            default -> throw new IllegalStateException("Unexpected value: " + expr.operator.type);
-        };
+    public Object visitUnaryExpr(Unary expr)
+    {
+        Object right = evaluate(expr.right);
+        TokenType type = expr.operator.type;
+        switch (type){
+            case MINUS: return -(Double) right;
+            case BANG: return ! (Boolean) right;
+            default: throw new IllegalStateException("Unexpected value: " + expr.operator.type);
+        }
     }
 
     @Override
@@ -165,34 +172,42 @@ public class Interpreter implements ExprVisitor<Object>,
     @Override
     public Void visitIfStmt(If stmt) {
         boolean condition = (boolean) evaluate(stmt.condition);
-        if(condition){
+        if(condition)
+        {
             execute(stmt.thenBranch);
-        }else {
+        }
+        else
+        {
             execute(stmt.elseBranch);
         }
         return null;
     }
 
     @Override
-    public Void visitPrintStmt(Print stmt) {
+    public Void visitPrintStmt(Print stmt)
+    {
         System.out.println(evaluate(stmt.expression));
         return null;
     }
 
     @Override
-    public Void visitReturnStmt(Return stmt) {
+    public Void visitReturnStmt(Return stmt)
+    {
         throw new LoxReturn(evaluate(stmt.value));
     }
 
     @Override
-    public Void visitVarStmt(Var stmt) {
+    public Void visitVarStmt(Var stmt)
+    {
         environment.define(stmt.name.lexeme, evaluate(stmt.initializer));
         return null;
     }
 
     @Override
-    public Void visitWhileStmt(While stmt) {
-        while ((boolean) evaluate(stmt.condition)){
+    public Void visitWhileStmt(While stmt)
+    {
+        while ((boolean) evaluate(stmt.condition))
+        {
             execute(stmt.body);
         }
         return null;
